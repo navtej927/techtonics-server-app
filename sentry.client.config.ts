@@ -1,8 +1,15 @@
 import * as Sentry from "@sentry/nextjs";
 
-console.log("nodo client", process.env.NODE_ENV)
+console.log(
+  "nodo client",
+  process.env.NODE_ENV,
+  process.env.npm_package_version
+);
 
 Sentry.init({
+  environment: process.env.NODE_ENV,
+  enabled: process.env.NODE_ENV === "production",
+
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
   // Replay may only be enabled for the client-side
   integrations: [Sentry.replayIntegration()],
@@ -17,7 +24,7 @@ Sentry.init({
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1.0,
 
-  enabled: process.env.NODE_ENV === 'production',
+  release: "0.0.2", // This is the release version of your application
 
   // ...
 

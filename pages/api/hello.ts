@@ -2,5 +2,10 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  res.status(200).json({ text: `Hello ${process.env.DB_USER}` });
+
+  function getErrorMessage() {
+    throw new Error(`Error: server`);
+  }
+  
+  res.status(200).json({ text: `Hello ${process.env.DB_USER} ${getErrorMessage()}` });
 }

@@ -1,15 +1,21 @@
 import * as Sentry from "@sentry/nextjs";
 
-console.log("nodo server", process.env.NODE_ENV)
+console.log(
+  "nodo server",
+  process.env.NODE_ENV,
+  process.env.npm_package_version
+);
 
 Sentry.init({
+  environment: process.env.NODE_ENV,
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
 
   // Set tracesSampleRate to 1.0 to capture 100%
   // of transactions for performance monitoring.
   // We recommend adjusting this value in production
   tracesSampleRate: 1.0,
-  enabled: process.env.NODE_ENV === 'production',
+  enabled: process.env.NODE_ENV === "production",
+  release: "0.0.2",
 
   // ...
 

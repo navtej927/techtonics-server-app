@@ -3,10 +3,13 @@
 // https://nextjs.org/docs/api-reference/next.config.js/introduction
 
 const { withSentryConfig } = require("@sentry/nextjs");
+const withBundleAnalyzer = require("@next/bundle-analyzer")();
 
 // your existing module.exports or default export
 const nextConfig = {
-
+  env: {
+    SENTRY_RELEASE: "0.0.3",
+  },
   // Optional build-time configuration options
   sentry: {
     // See the sections below for information on the following options:
@@ -46,7 +49,12 @@ const sentryWebpackPluginOptions = {
 };
 
 // Make sure adding Sentry options is the last code to run before exporting
-module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions);
+const NEXTJSCONFIG = withSentryConfig(nextConfig, sentryWebpackPluginOptions);
+
+module.exports =
+  process.env.ANALYZE === "true"
+    ? withBundleAnalyzer(NEXTJSCONFIG)
+    : NEXTJSCONFIG;
 
 // If you're using a next.config.mjs file:
 // export default withSentryConfig(nextConfig, sentryWebpackPluginOptions);
